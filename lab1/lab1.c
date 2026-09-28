@@ -12,20 +12,12 @@ int main() {
   while (num_char > 0) {
     printf("Please enter a string to tokenize: ");
     num_char = getline(&input, &size, stdin);
-
-    if (num_char == -1) {
-      printf("Error reading input");
-      free(input);
-    }
-
     char *saveptr;
     char *ret = strtok_r(input, " ", &saveptr);
     printf("%s\n", ret);
     while (ret != NULL) {
       ret = strtok_r(NULL, " ", &saveptr);
-      if (ret != NULL) {
-        printf("%s\n", ret);
-      }
+      printf("%s\n", ret);
     }
   }
   free(input);
