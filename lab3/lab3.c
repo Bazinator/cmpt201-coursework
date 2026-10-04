@@ -10,31 +10,47 @@ int main() {
   // For each line we get the size of it and store it in an array of char*
   // free the memory, then reinit and continue
 
-  char *input = "test";
-  ssize_t size = 0;
+  char *input = NULL;
+  size_t size = 0;
   ssize_t num_char = 1;
 
-  char *print = "print";
-  char *inputs[5];
+  char *inputs[5] = {NULL, NULL, NULL, NULL, NULL};
+  int pos = 0;
+  int total_entries = 0;
 
-  while (num_char > 0) {
-    input = "test";
-    int pos = 0;
-    while (*input != *print) {
-      if (pos == 5) {
-        pos = 0;
+  while (1) {
+    printf("Enter input: ");
+    num_char = getline(&input, &size, stdin);
+
+    if (strcmp(input, "print\n") == 0) {
+      int items_to_print = total_entries < 5 ? total_entries: 5;
+
+      int start_idx = total_entries < 5 ? 0 : pos;
+
+      for (int i = 0; i <items_to_print; i++ {
+        int idx = (start_idx + i) % 5;
+
+        printf("%s", inputs[idx]);
+
+        free(inputs[idx]);
+        inputs[idx] = NULL;
       }
-      printf("Enter input: ");
-      num_char = getline(&input, &size, stdin);
-
-      inputs[pos] = input;
-      pos++;
+      pos = 0;
+      total_entries = 0;
+      continue;
     }
 
-    // Print out the last 5
-    while (pos >= 0) {
-      printf("we had a line\n");
-      pos--;
+    if (inputs[pos] != NULL) {
+      free(inputs[pos]);
     }
+
+    inputs[pos] = strdup(input);
+    pos = (pos + 1) % 5;
+    total_entries++;
   }
+
+  free(input);
+
+  return 0;
+
 }
