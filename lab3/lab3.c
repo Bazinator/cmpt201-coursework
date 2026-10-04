@@ -23,11 +23,11 @@ int main() {
     num_char = getline(&input, &size, stdin);
 
     if (strcmp(input, "print\n") == 0) {
-      int items_to_print = total_entries < 5 ? total_entries: 5;
+      int items_to_print = total_entries < 5 ? total_entries : 5;
 
       int start_idx = total_entries < 5 ? 0 : pos;
 
-      for (int i = 0; i <items_to_print; i++ {
+      for (int i = 0; i < items_to_print; i++) {
         int idx = (start_idx + i) % 5;
 
         printf("%s", inputs[idx]);
@@ -52,5 +52,4 @@ int main() {
   free(input);
 
   return 0;
-
 }
