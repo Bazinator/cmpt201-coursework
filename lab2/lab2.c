@@ -21,21 +21,28 @@ int main() {
   while (num_char > 0) {
     printf("Please enter a command to execute: ");
     fflush(stdout);
-    num_char = getline(&input, &size, stdin);
 
+    if (input) {
+      free(input);
+      input = NULL;
+    }
+    num_char = getline(&input, &size, stdin);
     input[strcspn(input, "\r\n")] = '\0';
 
     pid_t pid = fork();
 
-    if (pid == 0) {
+    if (pid < 0) {
+      perror("Fork failed\n");
+      free(input);
+      return 1;
+    } else if (pid == 0) {
       // CHILD
 
       char *argv[] = {input, NULL};
 
-      execv(input, argv);
+      execvp(input, argv);
 
       printf("Exec failure\n");
-      free(input);
 
     } else {
       int status;
@@ -44,5 +51,4 @@ int main() {
       }
     }
   }
-  free(input);
 }

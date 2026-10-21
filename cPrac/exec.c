@@ -12,11 +12,9 @@ int main() {
 
     printf("Hi there I a mmichael and I am the child");
 
-    sleep(5);
     execlp("/bin/ls", "ls", "-a", "-l", "-h", (char *)NULL);
-    printf("Hi there I a mmichael and I am the child");
-    sleep(5);
 
+    return -1;
   } else {
     // PARENT
     // execlp("/bin/ls", "ls", "-a", (char *)NULL);

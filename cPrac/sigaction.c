@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void sleeplongtime(int signum) { write(STDOUT_FILENO, "CTRL-C Pressed\n", 14); }
+void sleeplongtime(int signum) { write(STDOUT_FILENO, "CTRL-C Pressed\n", 15); }
 
 int main() {
 
