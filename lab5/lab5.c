@@ -16,10 +16,10 @@ void initialize_block(struct header *block, uint64_t size, struct header *next, 
 
 int find_first_fit(struct header *free_list_ptr, uint64_t size) {
   // TODO: Implement first fit
-  while (free_list_ptr->size < size && free_list_ptr->next != NULL) {
+  while (free_list_ptr->size < size && free_list_ptr != NULL) {
     free_list_ptr = free_list_ptr->next;
   }
-  if (free_list_ptr->next == NULL) {
+  if (free_list_ptr == NULL) {
     return -1;
   }
   return free_list_ptr->id;
@@ -31,7 +31,7 @@ int find_best_fit(struct header *free_list_ptr, uint64_t size) {
   // TODO: Implement best fit
   struct header *pntr = free_list_ptr;
   int i = 0;
-  while (pntr->next != NULL) {
+  while (pntr != NULL) {
     if (pntr->size >= size) {
       arr[i] = pntr->size;
       i++;
@@ -48,7 +48,7 @@ int find_best_fit(struct header *free_list_ptr, uint64_t size) {
   }
 
   struct header *ptr2 = free_list_ptr;
-  while (ptr2->next != NULL) {
+  while (ptr2 != NULL) {
     if (ptr2->size == min) {
       return ptr2->id;
     }
@@ -61,13 +61,13 @@ int find_worst_fit(struct header *free_list_ptr, uint64_t size) {
   // TODO: Implement worst fit
   int maxSize = 0;
   struct header *pntr = free_list_ptr;
-  while (pntr->next != NULL) {
+  while (pntr != NULL) {
     if (pntr->size > maxSize) {
       maxSize = pntr->size;
     }
     pntr = pntr->next;
   }
-  while (free_list_ptr->next != NULL) {
+  while (free_list_ptr != NULL) {
     if (free_list_ptr->size == maxSize) {
       return free_list_ptr->id;
     }
@@ -83,18 +83,20 @@ int main(void) {
   struct header *free_block3 = (struct header *)malloc(sizeof(struct header));
   struct header *free_block4 = (struct header *)malloc(sizeof(struct header));
   struct header *free_block5 = (struct header *)malloc(sizeof(struct header));
+  struct header *free_block6 = (struct header *)malloc(sizeof(struct header));
 
   initialize_block(free_block1, 6, free_block2, 1);
   initialize_block(free_block2, 12, free_block3, 2);
   initialize_block(free_block3, 24, free_block4, 3);
   initialize_block(free_block4, 8, free_block5, 4);
-  initialize_block(free_block5, 4, NULL, 5);
+  initialize_block(free_block5, 4, free_block6, 5);
+  initialize_block(free_block6, 100, NULL, 6);
 
   struct header *free_list_ptr = free_block1;
 
   int first_fit_id = find_first_fit(free_list_ptr, 7);
   int best_fit_id = find_best_fit(free_list_ptr, 7);
-  int worst_fit_id = find_worst_fit(free_list_ptr, 7);
+  int worst_fit_id = find_worst_fit(free_list_ptr, 100);
 
   // TODO: Print out the IDs
   printf("The ID for First-Fit algorithm is: %d\n", first_fit_id);
