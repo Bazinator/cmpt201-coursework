@@ -2,20 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ASSERT(expr)                                                           \
-  {                                                                            \
-    if (!(expr)) {                                                             \
-      fprintf(stderr, "Assertion failed: %s\n", #expr);                        \
-      exit(1);                                                                 \
-    }                                                                          \
+#define ASSERT(expr)                                                                               \
+  {                                                                                                \
+    if (!(expr)) {                                                                                 \
+      fprintf(stderr, "Assertion failed: %s\n", #expr);                                            \
+      fprintf(stderr, "File Name: %s\n Line Number: %d\n", __FILE__, __LINE__);                    \
+      exit(1);                                                                                     \
+    }                                                                                              \
   }
 
-#define TEST(expr)                                                             \
-  {                                                                            \
-    if (!(expr)) {                                                             \
-      fprintf(stderr, "Test failed: %s\n", #expr);                             \
-      exit(1);                                                                 \
-    }                                                                          \
+#define TEST(expr)                                                                                 \
+  {                                                                                                \
+    if (!(expr)) {                                                                                 \
+      fprintf(stderr, "Test failed: %s\n", #expr);                                                 \
+      exit(1);                                                                                     \
+    }                                                                                              \
   }
 
 typedef struct node {
@@ -55,8 +56,9 @@ void insert_sorted(uint64_t data) {
 
     prev->next = new_node;
     if (curr != NULL) {
-      new_node->next = curr->next;
+      new_node->next = curr;
     }
+    ASSERT(new_node->next == curr);
   }
 
   info.sum += data;
@@ -78,6 +80,17 @@ int index_of(uint64_t data) {
   return -1;
 }
 
+int return_sum() {
+  node_t *curr = head;
+  int sum = 0;
+
+  while (curr != NULL) {
+    sum += curr->data;
+    curr = curr->next;
+  }
+  return sum;
+}
+
 int main() {
   insert_sorted(1);
   insert_sorted(3);
@@ -86,6 +99,7 @@ int main() {
 
   TEST(info.sum == 1 + 3 + 5 + 2);
   TEST(index_of(2) == 1);
+  ASSERT(info.sum == return_sum());
 
   return 0;
 }
